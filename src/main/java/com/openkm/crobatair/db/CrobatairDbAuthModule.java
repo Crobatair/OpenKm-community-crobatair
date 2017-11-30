@@ -35,64 +35,119 @@ public class CrobatairDbAuthModule implements CrobatairAuthModule{
     private static Logger log = LoggerFactory.getLogger(CrobatairDbAuthModule.class);
     private static CrobatairAdapter crobatairAdapter = null;
     
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  /**
-//   * 
-//   * @return
-//   * @throws CrobatairAdapterException 
-//   */
-//    public static synchronized CrobatairAdapter getCrobatairAdapter() throws CrobatairAdapterException{
-//            if (crobatairAdapter == null) {
-//                    try {
-//                            log.info("CrobatairAdapter: {}", Config.CROBATAIR_ADAPTER);
-//                            Object object = Class.forName(Config.CROBATAIR_ADAPTER).newInstance();
-//                            crobatairAdapter = (CrobatairAdapter) object;
-//                    } catch (ClassNotFoundException e) {
-//                            log.error(e.getMessage(), e);
-//                            throw new CrobatairAdapterException(e.getMessage(), e);
-//                    } catch (InstantiationException e) {
-//                            log.error(e.getMessage(), e);
-//                            throw new CrobatairAdapterException(e.getMessage(), e);
-//                    } catch (IllegalAccessException e) {
-//                            log.error(e.getMessage(), e);
-//                            throw new CrobatairAdapterException(e.getMessage(), e);
-//                    }
-//            }
-//
-//            return crobatairAdapter;
-//    }
-       
     //Add all method to implement here :´v 
     @Override
+    /**
+     * 
+     */
     public List<User> getUsers(String token) {
-                List<User> users = new ArrayList<>();
-		Authentication oldAuth = null;
+        List<User> users = new ArrayList<>();
+        Authentication oldAuth = null;
 
-		try {
-			if (token == null) {
-				PrincipalUtils.getAuthentication();
-			} else {
-				oldAuth = PrincipalUtils.getAuthentication();
-				PrincipalUtils.getAuthenticationByToken(token);
-			}
+        try {
+            if (token == null) {
+                    PrincipalUtils.getAuthentication();
+            } else {
+                    oldAuth = PrincipalUtils.getAuthentication();
+                    PrincipalUtils.getAuthenticationByToken(token);
+            }
+            ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
+            users = AuthDAO.findAllUsers(Boolean.FALSE);
+        } catch (AccessDeniedException e) {
+            log.info(e.getMessage());System.out.println(e.getMessage());
+        } catch (DatabaseException ex) {
+            java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (token != null) {
+                    PrincipalUtils.setAuthentication(oldAuth);
+            }
+        }
 
-                        ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
-                        users = AuthDAO.findAllUsers(Boolean.FALSE);
-                        
-			//users = CrobatairDatabasePrincipalAdapter;
-		} catch (AccessDeniedException e) {
-			log.info(e.getMessage());System.out.println(e.getMessage());
-		} catch (DatabaseException ex) {
-                    java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-			if (token != null) {
-				PrincipalUtils.setAuthentication(oldAuth);
-			}
-		}
+        return users;
+    }
+    
+    @Override
+    public List<User> getUsersByRole(String token, String role) throws PrincipalAdapterException {
+        List<User> users = new ArrayList<>();
+        Authentication oldAuth = null;
+        try {
+            if (token == null) {
+                    PrincipalUtils.getAuthentication();
+            } else {
+                    oldAuth = PrincipalUtils.getAuthentication();
+                    PrincipalUtils.getAuthenticationByToken(token);
+            }
+            ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
+            users = AuthDAO.findUsersByRole(role, Boolean.FALSE);
+        } catch (AccessDeniedException e) {
+            log.info(e.getMessage());System.out.println(e.getMessage());
+        } catch (DatabaseException ex) {
+            java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (token != null) {
+                    PrincipalUtils.setAuthentication(oldAuth);
+            }
+        }
 
-		return users;
+        return users;
     }
 
+    @Override
+    public List<Role> getRoles(String token) throws PrincipalAdapterException {
+        List<Role> respuesta = new ArrayList<>();
+        Authentication oldAuth = null;
+        try {
+            if (token == null) {
+                    PrincipalUtils.getAuthentication();
+            } else {
+                    oldAuth = PrincipalUtils.getAuthentication();
+                    PrincipalUtils.getAuthenticationByToken(token);
+            }
+            ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
+            respuesta = AuthDAO.findAllRoles();
+        } catch (AccessDeniedException e) {
+            log.info(e.getMessage());System.out.println(e.getMessage());
+        } catch (DatabaseException ex) {
+            java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (token != null) {
+                    PrincipalUtils.setAuthentication(oldAuth);
+            }
+        }
+        return respuesta;
+    }
+
+    @Override
+    public List<Role> getRolesByUser(String token, String user) throws PrincipalAdapterException {
+        List<Role> respuesta = new ArrayList<>();
+        Authentication oldAuth = null;
+        try {
+            if (token == null) {
+                    PrincipalUtils.getAuthentication();
+            } else {
+                    oldAuth = PrincipalUtils.getAuthentication();
+                    PrincipalUtils.getAuthenticationByToken(token);
+            }
+            ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
+            respuesta = AuthDAO.findRolesByUser(user, Boolean.FALSE);
+        } catch (AccessDeniedException e) {
+            log.info(e.getMessage());System.out.println(e.getMessage());
+        } catch (DatabaseException ex) {
+            java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (token != null) {
+                    PrincipalUtils.setAuthentication(oldAuth);
+            }
+        }
+        return respuesta;
+    }
+    
+    
+    
+    
+    
+    
+    
     @Override
     public Map<String, Integer> getGrantedUsers(String token, String nodeId) throws PathNotFoundException, AccessDeniedException, RepositoryException, DatabaseException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -110,21 +165,6 @@ public class CrobatairDbAuthModule implements CrobatairAuthModule{
 
     @Override
     public Map<String, Integer> getGrantedRoles(String token, String nodeId) throws PathNotFoundException, AccessDeniedException, RepositoryException, DatabaseException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Role> getRoles(String token) throws PrincipalAdapterException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<User> getUsersByRole(String token, String role) throws PrincipalAdapterException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Role> getRolesByUser(String token, String user) throws PrincipalAdapterException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
