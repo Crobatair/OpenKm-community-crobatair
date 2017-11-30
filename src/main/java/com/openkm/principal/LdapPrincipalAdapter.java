@@ -23,6 +23,7 @@ package com.openkm.principal;
 
 import com.openkm.cache.CacheProvider;
 import com.openkm.core.Config;
+import com.openkm.dao.bean.User;
 import com.openkm.util.SystemProfiling;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -419,4 +420,9 @@ public class LdapPrincipalAdapter implements PrincipalAdapter {
 	public void removeRole(String user, String role) throws PrincipalAdapterException {
 		throw new NotImplementedException("removeRole");
 	}
+
+    @Override
+    public List<User> getAllUsers() throws PrincipalAdapterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -27,6 +27,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "OKM_ACTIVITY")
@@ -38,6 +39,7 @@ import java.util.Calendar;
 				@Index(name = "IDX_ACTIVITY_USRACT", columnNames = {"ACT_USER", "ACT_ACTION"})
 		}
 )
+@XmlRootElement
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_LENGTH = 4000;

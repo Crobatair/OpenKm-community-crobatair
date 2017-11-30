@@ -3,45 +3,96 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.openkm.crobatair.adapter;
+package com.openkm.crobatair.db;
 
 import com.openkm.bean.Mail;
 import com.openkm.core.AccessDeniedException;
+import com.openkm.core.Config;
 import com.openkm.core.DatabaseException;
 import com.openkm.core.PathNotFoundException;
 import com.openkm.core.RepositoryException;
+import com.openkm.crobatair.adapter.CrobatairAdapter;
+import com.openkm.crobatair.adapter.CrobatairAdapterException;
 import com.openkm.crobatair.module.CrobatairAuthModule;
 import com.openkm.dao.AuthDAO;
 import com.openkm.dao.bean.Role;
 import com.openkm.dao.bean.User;
-import com.openkm.principal.DatabasePrincipalAdapter;
 import com.openkm.principal.PrincipalAdapterException;
+import com.openkm.spring.PrincipalUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 
 /**
  *
  * @author Ale
  */
-public class CrobatairDatabasePrincipalAdapter implements CrobatairAuthModule{
-    private static Logger log = LoggerFactory.getLogger(DatabasePrincipalAdapter.class);
-
+public class CrobatairDbAuthModule implements CrobatairAuthModule{
+    private static Logger log = LoggerFactory.getLogger(CrobatairDbAuthModule.class);
+    private static CrobatairAdapter crobatairAdapter = null;
+    
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  /**
+//   * 
+//   * @return
+//   * @throws CrobatairAdapterException 
+//   */
+//    public static synchronized CrobatairAdapter getCrobatairAdapter() throws CrobatairAdapterException{
+//            if (crobatairAdapter == null) {
+//                    try {
+//                            log.info("CrobatairAdapter: {}", Config.CROBATAIR_ADAPTER);
+//                            Object object = Class.forName(Config.CROBATAIR_ADAPTER).newInstance();
+//                            crobatairAdapter = (CrobatairAdapter) object;
+//                    } catch (ClassNotFoundException e) {
+//                            log.error(e.getMessage(), e);
+//                            throw new CrobatairAdapterException(e.getMessage(), e);
+//                    } catch (InstantiationException e) {
+//                            log.error(e.getMessage(), e);
+//                            throw new CrobatairAdapterException(e.getMessage(), e);
+//                    } catch (IllegalAccessException e) {
+//                            log.error(e.getMessage(), e);
+//                            throw new CrobatairAdapterException(e.getMessage(), e);
+//                    }
+//            }
+//
+//            return crobatairAdapter;
+//    }
+       
+    //Add all method to implement here :´v 
     @Override
-    public List<User> getUsers(String token) throws PrincipalAdapterException {
-        List<User> resultado = new ArrayList<>();
-        try {
-            resultado = AuthDAO.findAllUsers(Boolean.FALSE);
-        } catch (DatabaseException ex) {
-            java.util.logging.Logger.getLogger(CrobatairDatabasePrincipalAdapter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return resultado;
+    public List<User> getUsers(String token) {
+                List<User> users = new ArrayList<>();
+		Authentication oldAuth = null;
+
+		try {
+			if (token == null) {
+				PrincipalUtils.getAuthentication();
+			} else {
+				oldAuth = PrincipalUtils.getAuthentication();
+				PrincipalUtils.getAuthenticationByToken(token);
+			}
+
+                        ///// Aqui que saltare llamar a common :v ... y llamare directamente al DatabasePrincipalAdapter
+                        users = AuthDAO.findAllUsers(Boolean.FALSE);
+                        
+			//users = CrobatairDatabasePrincipalAdapter;
+		} catch (AccessDeniedException e) {
+			log.info(e.getMessage());System.out.println(e.getMessage());
+		} catch (DatabaseException ex) {
+                    java.util.logging.Logger.getLogger(CrobatairDbAuthModule.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+			if (token != null) {
+				PrincipalUtils.setAuthentication(oldAuth);
+			}
+		}
+
+		return users;
     }
-    
-    
+
     @Override
     public Map<String, Integer> getGrantedUsers(String token, String nodeId) throws PathNotFoundException, AccessDeniedException, RepositoryException, DatabaseException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -61,8 +112,6 @@ public class CrobatairDatabasePrincipalAdapter implements CrobatairAuthModule{
     public Map<String, Integer> getGrantedRoles(String token, String nodeId) throws PathNotFoundException, AccessDeniedException, RepositoryException, DatabaseException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
 
     @Override
     public List<Role> getRoles(String token) throws PrincipalAdapterException {
@@ -122,5 +171,8 @@ public class CrobatairDatabasePrincipalAdapter implements CrobatairAuthModule{
     @Override
     public void removeRole(String token, User user, Role rol) throws PrincipalAdapterException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }   
+    }
+
+
+    
 }

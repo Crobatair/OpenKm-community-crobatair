@@ -22,6 +22,7 @@
 package com.openkm.principal;
 
 import com.openkm.core.Config;
+import com.openkm.dao.bean.User;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,4 +160,9 @@ public class DummyPrincipalAdapter implements PrincipalAdapter {
 	public void removeRole(String user, String role) throws PrincipalAdapterException {
 		throw new NotImplementedException("removeRole");
 	}
+
+    @Override
+    public List<User> getAllUsers() throws PrincipalAdapterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

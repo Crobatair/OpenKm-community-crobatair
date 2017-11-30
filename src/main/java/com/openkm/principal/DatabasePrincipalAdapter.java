@@ -58,8 +58,21 @@ public class DatabasePrincipalAdapter implements PrincipalAdapter {
 		return list;
 	}
         
-        
-        
+        @Override
+	public List<User> getAllUsers() throws PrincipalAdapterException {
+		log.debug("getAllUsers()");
+		List<User> list = new ArrayList<>();
+
+		try {
+			List<User> col = AuthDAO.findAllUsers(Boolean.FALSE);
+                        list = col;
+		} catch (DatabaseException e) {
+			throw new PrincipalAdapterException(e.getMessage(), e);
+		}
+
+		log.debug("getUsers: {}", list);
+		return list;
+	}
         
         
         

@@ -182,4 +182,9 @@ public class UsersRolesPrincipalAdapter implements PrincipalAdapter {
 		throw new NotImplementedException("removeRole");
 	}
 
+    @Override
+    public List<User> getAllUsers() throws PrincipalAdapterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

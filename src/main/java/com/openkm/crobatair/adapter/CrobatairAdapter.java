@@ -15,18 +15,56 @@ import java.util.List;
  */
 public interface CrobatairAdapter {
     
+    /**
+     * 
+     * @param token
+     * @return 
+     */
+    public List<User> getUsers(String token);
     
-    public List<User> getAllUsuarios();
-    public List<User> getAllUsersByRole (String rol);
+    /**
+     * 
+     * @param rol
+     * @return 
+     */
+    public List<User> getUsersByRole (String token, String rol);
+    
+    /**
+     * 
+     * @return 
+     */
+    public List<Role> getRoles(String token);
+    
+    /**
+     * 
+     * @param userId
+     * @return 
+     */
+    public List<Role> getRolesByUser(String token, String userId);
     
     
-    public List<Role> getAllRoles();
-    public List<Role> getAllRolesByUser(String userId);
+    /**
+     * 
+     * @param nodeId
+     * @return 
+     */
+    public List<Role> getGrantRoleList(String token, String nodeId);
     
-    public List<Role> getAllGrantRoleList(String nodeId);
-    public List<User> getAllGrandedUserList(String nodeId);
     
-    public User getUserById(String userId);
+    /**
+     * 
+     * @param nodeId
+     * @return 
+     */
+    public List<User> getGrandedUserList(String token, String nodeId);  
+    
+    
+    /**
+     * 
+     * @param userId
+     * @return 
+     */
+    public User getUserById(String token, String userId);
     
     
     

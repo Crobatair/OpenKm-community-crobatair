@@ -23,8 +23,8 @@ package com.openkm.module;
 
 import com.openkm.core.Config;
 import com.openkm.crobatair.adapter.CrobatairAdapterException;
-import com.openkm.crobatair.adapter.CrobatairAuthModule;
-
+import com.openkm.crobatair.db.CrobatairDbAuthModule;
+import com.openkm.crobatair.module.CrobatairAuthModule;
 /**
  * Choose between Native Repository or Jackrabbit implementations.
  *
@@ -49,9 +49,8 @@ public class ModuleManager {
 	private static UserConfigModule userConfigModule = null;
 
         ////////////////////////////////////
-        private static CrobatairAuthModule crobatairAuthModule = null;
-        
-        
+        private static CrobatairDbAuthModule crobatairDbAuthModule = null;
+
 	/**
 	 *
 	 */
@@ -70,13 +69,15 @@ public class ModuleManager {
         
         	/**
 	 *
+     * @return 
+     * @throws com.openkm.crobatair.adapter.CrobatairAdapterException
 	 */
-	public static synchronized CrobatairAuthModule getCrobatairAuthModule() throws CrobatairAdapterException {
-		if (crobatairAuthModule == null) {
-                    crobatairAuthModule = (CrobatairAuthModule) CrobatairAuthModule.getCrobatairAdapter();
+	public static synchronized CrobatairDbAuthModule getCrobatairAuthModule() throws CrobatairAdapterException {
+		if (crobatairDbAuthModule == null) {
+                    crobatairDbAuthModule = new com.openkm.crobatair.db.CrobatairDbAuthModule();
 		}
 
-		return crobatairAuthModule;
+		return crobatairDbAuthModule;
 	}
         
         

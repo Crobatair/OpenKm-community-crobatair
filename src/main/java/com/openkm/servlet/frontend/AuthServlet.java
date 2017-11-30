@@ -164,7 +164,7 @@ public class AuthServlet extends OKMRemoteServiceServlet implements OKMAuthServi
 		try {
 			Collection<String> grantedUsers = OKMAuth.getInstance().getGrantedUsers(null, nodePath).keySet();
 
-			for (String userId : OKMAuth.getInstance().getUsers(null)) {
+                            for (String userId : OKMAuth.getInstance().getUsers(null)) {
 				if (!grantedUsers.contains(userId)) {
 					GWTGrantedUser gu = new GWTGrantedUser();
 					gu.setPermisions(0);

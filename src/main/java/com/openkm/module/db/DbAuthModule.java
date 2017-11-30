@@ -31,6 +31,7 @@ import com.openkm.dao.NodeFolderDAO;
 import com.openkm.dao.PendingTaskDAO;
 import com.openkm.dao.bean.NodeFolder;
 import com.openkm.dao.bean.PendingTask;
+import com.openkm.dao.bean.User;
 import com.openkm.module.AuthModule;
 import com.openkm.module.common.CommonAuthModule;
 import com.openkm.module.db.stuff.DbSessionManager;
@@ -854,5 +855,33 @@ public class DbAuthModule implements AuthModule, ApplicationContextAware {
 				PrincipalUtils.setAuthentication(oldAuth);
 			}
 		}
-	}
+                
+                
+        }  
+                /////////////////////////////////////////////////////////////
+        @Override
+        public List<User> getAllUsers(String token) throws PrincipalAdapterException {
+            List<User> users = new ArrayList();
+            Authentication oldAuth = null;
+
+            try {
+                    if (token == null) {
+                            PrincipalUtils.getAuthentication();
+                    } else {
+                            oldAuth = PrincipalUtils.getAuthentication();
+                            PrincipalUtils.getAuthenticationByToken(token);
+                    }
+
+                    users = CommonAuthModule.getAllUsers();
+            } catch (AccessDeniedException e) {
+                    throw new PrincipalAdapterException(e.getMessage(), e);
+            } finally {
+                    if (token != null) {
+                            PrincipalUtils.setAuthentication(oldAuth);
+                    }
+            }
+
+            return users;
+        }
+	
 }

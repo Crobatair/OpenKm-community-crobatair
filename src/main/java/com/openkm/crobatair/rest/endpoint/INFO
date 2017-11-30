@@ -1,0 +1,23 @@
+
+<INFO>
+Para la creacion de un service de REST, es necesario agregar: 
+- resources/rest.xml
+  <jaxrs:server id=" identificadorDelServicio   " address="/rest/crobatair/*****">
+    <jaxrs:serviceBeans>
+      <beans:bean class="com.openkm.crobatair.rest.endpoint.*****Service"/>
+    </jaxrs:serviceBeans>
+    <jaxrs:providers>
+      <bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+        <property name="dropRootElement" value="true"/>
+        <property name="supportUnwrapped" value="true"/>
+      </bean>    
+    </jaxrs:providers>
+  </jaxrs:server>
+
+- Modificar ModuleManager
+
+- Crear el Service dentro de restEndPoint
+
+- Crear la interfaz en com.openkm AuthModule para el nuevo rest
+
+- la clase en crobatair.db debe implementar la interfaz, y es ahi donde se llama a la base de datos...

@@ -25,6 +25,7 @@ import com.openkm.core.AccessDeniedException;
 import com.openkm.core.DatabaseException;
 import com.openkm.core.PathNotFoundException;
 import com.openkm.core.RepositoryException;
+import com.openkm.dao.bean.User;
 import com.openkm.module.AuthModule;
 import com.openkm.module.ModuleManager;
 import com.openkm.principal.PrincipalAdapterException;
@@ -260,4 +261,9 @@ public class OKMAuth implements AuthModule {
 		am.removeRole(token, user, role);
 		log.debug("removeRole: void");
 	}
+
+    @Override
+    public List<User> getAllUsers(String token) throws PrincipalAdapterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

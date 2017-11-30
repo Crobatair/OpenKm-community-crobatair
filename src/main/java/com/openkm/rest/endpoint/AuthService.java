@@ -21,11 +21,13 @@
 
 package com.openkm.rest.endpoint;
 
+import com.openkm.dao.bean.User;
 import com.openkm.module.AuthModule;
 import com.openkm.module.ModuleManager;
 import com.openkm.principal.PrincipalAdapterException;
 import com.openkm.rest.GenericException;
 import com.openkm.rest.util.*;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

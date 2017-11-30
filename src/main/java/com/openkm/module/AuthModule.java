@@ -25,6 +25,7 @@ import com.openkm.core.AccessDeniedException;
 import com.openkm.core.DatabaseException;
 import com.openkm.core.PathNotFoundException;
 import com.openkm.core.RepositoryException;
+import com.openkm.dao.bean.User;
 import com.openkm.principal.PrincipalAdapterException;
 
 import java.util.List;
@@ -131,11 +132,20 @@ public interface AuthModule {
 	/**
 	 * Retrieves a list of repository users
 	 *
+     * @param token
 	 * @return A collection of repository users.
+     * @throws com.openkm.principal.PrincipalAdapterException
 	 * @throws RepositoryException If there is any error retrieving the users list.
 	 */
 	public List<String> getUsers(String token) throws PrincipalAdapterException;
 
+        public List<User> getAllUsers(String token) throws PrincipalAdapterException;
+        
+        
+        
+        
+        
+        
 	/**
 	 * Retrieves a list of repository roles.
 	 *

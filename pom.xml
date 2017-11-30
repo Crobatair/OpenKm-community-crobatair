@@ -93,7 +93,7 @@
     </repository>
   </repositories>
 
-  <dependencies>
+  <dependencies>     
     <!-- Test units -->
     <dependency>
       <groupId>junit</groupId>

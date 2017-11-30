@@ -22,6 +22,7 @@
 package com.openkm.principal;
 
 import com.openkm.crobatair.adapter.CrobatairAdapter;
+import com.openkm.dao.bean.User;
 import java.util.List;
 
 public interface PrincipalAdapter{
@@ -34,6 +35,11 @@ public interface PrincipalAdapter{
 	 */
 	public List<String> getUsers() throws PrincipalAdapterException;
 
+        public List<User> getAllUsers() throws PrincipalAdapterException;
+        
+        
+        
+        
 	/**
 	 * Method to retrieve all roles from a authentication source.
 	 *

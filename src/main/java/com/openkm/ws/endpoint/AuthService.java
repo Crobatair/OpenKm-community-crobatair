@@ -213,4 +213,17 @@ public class AuthService {
 		log.debug("getName: {}", ret);
 		return ret;
 	}
+
+    /**
+     * Web service operation
+     * @param Token
+     * @return 
+     * @throws com.openkm.principal.PrincipalAdapterException 
+     */
+    @WebMethod(operationName = "getAllUsers")
+    public List<com.openkm.dao.bean.User> operation(@WebParam(name = "Token") String Token) throws PrincipalAdapterException {
+        AuthModule am = ModuleManager.getAuthModule();
+        
+        return am.getAllUsers(Token);
+    }
 }

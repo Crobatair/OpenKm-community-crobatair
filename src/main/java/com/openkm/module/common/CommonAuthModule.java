@@ -24,8 +24,10 @@ package com.openkm.module.common;
 import com.openkm.core.Config;
 import com.openkm.crobatair.adapter.CrobatairAdapter;
 import com.openkm.crobatair.adapter.CrobatairAdapterException;
+import com.openkm.dao.bean.User;
 import com.openkm.principal.PrincipalAdapter;
 import com.openkm.principal.PrincipalAdapterException;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +56,28 @@ public class CommonAuthModule {
 		log.debug("getUsers: {}", list);
 		return list;
 	}
-
+        
+        public static List<User> getAllUsers() throws PrincipalAdapterException{
+            log.debug("getAllUsers");
+            List<User> list = new ArrayList<>();
+            try {
+                    PrincipalAdapter principalAdapter = CommonAuthModule.getPrincipalAdapter();
+                    list = principalAdapter.getAllUsers();
+		} catch (PrincipalAdapterException e) {
+                    log.error(e.getMessage(), e);
+                    throw e;
+            }
+            
+            return list;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
 	/**
 	 * Get roles
 	 */
